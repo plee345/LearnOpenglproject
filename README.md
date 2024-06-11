@@ -1,3 +1,5 @@
 # firstOpenGLProject
 
-This repository will show my work while following the resource learnopengl.com. My projects will be grouped by the lessons.
+This repository will show my work while following the resource learnopengl.com. The current output of the program will reflect what lesson I am on.
+<br>
+Done on Virtual Studio 22
