@@ -101,27 +101,30 @@ int main() {
 
 	float vertices[] =
 	{
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.0f, 0.5f, 0.0f
+		//first triangle
+		0.5f, 0.5f, 0.0f, //top right
+		0.5f, -0.5f, 0.0f, //bottom right
+		-0.5f,- 0.5f, 0.0f, //bottom left
+		-0.5f, 0.5f, 0.0f //top left
+	};
+
+	unsigned int indices[] =
+	{
+		0,1,3, //first triangle
+		1,2,3 //second triangle
 	};
 	//Create Vertex Array Object
-	unsigned int VAO, VBO;
+	unsigned int VAO, VBO, EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
 
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-
-
-	//Future Parker
-	//Go back and review VAO's and how they interact with VBO's
-	//Also go learn EBO's and try the challenges to reinforce your understanding of this lesson
-	//Thanks :)
-
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -138,7 +141,15 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		
+		//render rectangle with EBO
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		//render triangles without EBO
+		//glDrawArrays(GL_TRIANGLES, 0, 6);
+		
+
 		//check for changes and swap the buffers to prevent flickering
 		glfwSwapBuffers(window);
 		glfwPollEvents();
